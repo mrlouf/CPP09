@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:49:47 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/19 19:30:16 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:12:55 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	BitcoinExchange::processInput(std::ifstream &input)
 		size_t delimiterPos = line.find('|');
 		if (delimiterPos == std::string::npos)
 		{
-			std::cout << "Error: Bad input => \'" << line << "\'" << std::endl;
+			std::cerr << "Error: Bad input => \'" << line << "\'" << std::endl;
 			continue;
 		}
 
@@ -137,7 +137,7 @@ void	BitcoinExchange::processInput(std::ifstream &input)
 
 		if (!isValidDate(dateStr))
 		{
-			std::cout << "Error: Bad input => " << line << std::endl;
+			std::cerr << "Error: Bad input => " << line << std::endl;
 			continue;
 		}
 
@@ -172,15 +172,15 @@ void	BitcoinExchange::processInput(std::ifstream &input)
 			break;
 
 		case BAD_INPUT:
-			std::cout << "Error: Bad input => " << line << std::endl;
+			std::cerr << "Error: Bad input => " << line << std::endl;
 			break;
 
 		case VALUE_UNDERFLOW:
-			std::cout << "Error: Value too low => " << valueStr << std::endl;
+			std::cerr << "Error: Value too low => " << valueStr << std::endl;
 			break;
 			
 		case VALUE_OVERFLOW:
-			std::cout << "Error: Value too high => " << valueStr << std::endl;
+			std::cerr << "Error: Value too high => " << valueStr << std::endl;
 			break;
 		}
 	}
