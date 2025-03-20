@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:49:47 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/20 10:12:06 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:11:26 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,9 @@ void	BitcoinExchange::processInput(std::ifstream &input)
 		}
 
 		// convert date from string to unsigned int
-		dateStr.erase(std::remove(dateStr.begin(), dateStr.end(), '-'), dateStr.end());
-		unsigned int dateUint = static_cast<unsigned int>(atol(dateStr.c_str()));
+		std::string dateStrCpy = dateStr;
+		dateStrCpy.erase(std::remove(dateStrCpy.begin(), dateStrCpy.end(), '-'), dateStrCpy.end());
+		unsigned int dateUint = static_cast<unsigned int>(atol(dateStrCpy.c_str()));
 
 		ValidResult result = validateValue(valueStr);
 		
@@ -170,6 +171,10 @@ void	BitcoinExchange::processInput(std::ifstream &input)
 			{
 				if (it != _data.begin())	// if not found, use the previous date
 					--it;
+				else {
+					std::cerr << "Error: Bad input => " << line << std::endl;
+					continue;
+				}
 				float exchangeRate = it->second;
 				float value = std::strtof(valueStr.c_str(), NULL);
 				std::cout << dateStr << " => " << value << " = " << value * exchangeRate << std::endl;

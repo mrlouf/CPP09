@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:49:43 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/19 18:50:25 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:00:20 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fstream>
 # include <cstdlib>
 # include <algorithm>
+# include <ctime>
 
 enum ValidResult {
 	VALID,
