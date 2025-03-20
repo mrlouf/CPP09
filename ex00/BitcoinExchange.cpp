@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:49:47 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/19 21:12:55 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/20 10:12:06 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,11 @@ void	BitcoinExchange::processInput(std::ifstream &input)
 	std::string line;
 	while (std::getline(input, line))
 	{
+		if (line == "date | value") {
+			std::cout << line << std::endl;
+			continue;
+		}
+
 		size_t delimiterPos = line.find('|');
 		if (delimiterPos == std::string::npos)
 		{
