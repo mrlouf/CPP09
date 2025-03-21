@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:50 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/21 19:19:52 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/21 19:42:54 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,7 @@ void PmergeMe::getContainers(char **av, std::vector<int> &v, std::list<int> &l) 
 	}
 }
 
-void PmergeMe::printContainer(std::vector<int> &v)
-{
-	for (std::vector<int>::const_iterator it = v.begin(); it != v.end(); it++)
-		std::cout << ' ' << *it;
-	std::cout << std::endl;
-}
+
 
 void PmergeMe::flatten(const std::pair<int, int> &element, std::vector<int> &result) {
 	result.push_back(element.first);
@@ -59,8 +54,16 @@ void PmergeMe::flatten(const std::pair<std::pair<int, int>, std::pair<int, int> 
 	flatten(element.second, result);
 }
 
-void PmergeMe::sortList(std::list<int> &l) {
-	(void)l;
+void PmergeMe::flatten(const std::pair<int, int> &element, std::list<int> &result) {
+	result.push_back(element.first);
+	if (element.first != element.second) {
+		result.push_back(element.second);
+	}
+}
+
+void PmergeMe::flatten(const std::pair<std::pair<int, int>, std::pair<int, int> > &element, std::list<int> &result) {
+	flatten(element.first, result);
+	flatten(element.second, result);
 }
 
 void PmergeMe::processInput(char **av) {
@@ -77,10 +80,10 @@ void PmergeMe::processInput(char **av) {
 	std::clock_t vectorEndTime = std::clock();
 
 	std::clock_t listStartTime = std::clock();
-	sortList(list);
+	list = recursiveListMerge(list);
 	std::clock_t listEndTime = std::clock();
 
-	std::cout << "After:	"; printContainer(vector);
+	std::cout << "After:	"; printContainer(list);
 
 	double elapsedVector = double(vectorEndTime - vectorStartTime) / CLOCKS_PER_SEC;
 	double elapsedList = double(listEndTime - listStartTime) / CLOCKS_PER_SEC;
