@@ -42,7 +42,4 @@ fclean: clean
 
 re: fclean all
 
-check: $(NAME)
-	@$(CC) $(FLAGS) -fsyntax-only $(SRC)
-
 .PHONY: all clean fclean re

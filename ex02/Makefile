@@ -6,7 +6,7 @@
 #    By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 13:23:14 by nponchon          #+#    #+#              #
-#    Updated: 2025/03/21 13:24:24 by nponchon         ###   ########.fr        #
+#    Updated: 2025/03/21 17:52:21 by nponchon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,9 @@ OBJS		= $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 
 all: $(NAME)
 
+run: all
+	./$(NAME) `shuf -i 1-100000 -n 3000 | tr '\n' ' '`
+
 leak:
 	valgrind --leak-check=full ./$(NAME)
 
@@ -54,7 +57,4 @@ fclean: clean
 
 re: fclean all
 
-check: $(NAME)
-	@$(CC) $(FLAGS) -fsyntax-only $(SRC)
-
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re leak run
