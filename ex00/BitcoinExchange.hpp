@@ -21,6 +21,7 @@
 # include <cstdlib>
 # include <algorithm>
 # include <ctime>
+# include <sstream>
 
 enum ValidResult {
 	VALID,

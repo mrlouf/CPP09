@@ -64,32 +64,33 @@ std::map<unsigned int, float> &BitcoinExchange::loadDataSet() {
 	return data;
 }
 
-/*
-	This function checks for a valid date format YYYY-MM-DD.
-	It excludes basic wrong formats such as months over 12, or days over 31.
-	Technically, it allows wrong formats like XXXX-02-31, but the scope of the program
-	is not to parse a calender. I do not want to go down the rabbit hole of 
-	accounting for leap years and all the likes.
-*/
 bool BitcoinExchange::isValidDate(const std::string &date)
 {
 	if (date.size() != 10 || date[4] != '-' || date[7] != '-')
 		return false;
-	for (size_t i = 0; i < date.size(); ++i)
-	{
-		if (i == 4 || i == 7)
-			continue;
-		if (!std::isdigit(date[i]))
-			return false;
-		if (i == 5 && date[i] > '1') // invalid month format
-			return false;
-		if (i == 6 && date[i - 1] == '1' && date[i] > '2') // invalid month format
-			return false;
-		if (i == 8 && date[i] > '3') // invalid day format
-			return false;
-		if (i == 9 && date[i - 1] == '3' && date[i] > '1') // invalid day format
-			return false;
+
+	std::stringstream y, m, d;
+	y << date.substr(0, 4);
+	m << date.substr(5, 2);
+	d << date.substr(8, 2);
+
+	unsigned int year, month, day;
+	y >> year; m >> month; d >> day; 
+
+	if (year < 2009 || year > 2025 || month < 1 || month > 12 || day < 1 || day > 31)
+		return false;
+
+	// check for leap years
+	if (month == 2 && day > 28) {
+		if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
+			return day == 29;
+		return false;
 	}
+
+	// check for months with 30 days
+	if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
+		return false;
+
 	return true;
 }
 
