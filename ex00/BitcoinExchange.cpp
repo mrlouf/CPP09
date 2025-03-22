@@ -51,9 +51,11 @@ std::map<unsigned int, float> &BitcoinExchange::loadDataSet() {
 	{
 		std::string keyStr = line.substr(0, line.find(','));
 		keyStr.erase(std::remove(keyStr.begin(), keyStr.end(), '-'), keyStr.end());
-		unsigned int key = static_cast<unsigned int>(atol(keyStr.c_str()));
+		unsigned int key = static_cast<unsigned int>(std::atol(keyStr.c_str()));
+
 		std::string valueStr = line.substr(line.find(',') + 1);
 		float value = static_cast<float>(std::atof(valueStr.c_str()));
+
 		data.insert(std::pair<unsigned int, float>(key, value));
 	}
 
