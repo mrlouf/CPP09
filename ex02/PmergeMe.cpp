@@ -40,8 +40,6 @@ void PmergeMe::getContainers(char **av, std::vector<int> &v, std::list<int> &l) 
 	}
 }
 
-
-
 void PmergeMe::flatten(const std::pair<int, int> &element, std::vector<int> &result) {
 	result.push_back(element.first);
     if (element.first != element.second) {
@@ -85,10 +83,10 @@ void PmergeMe::processInput(char **av) {
 
 	std::cout << "After:	"; printContainer(list);
 
-	double elapsedVector = double(vectorEndTime - vectorStartTime) / CLOCKS_PER_SEC;
-	double elapsedList = double(listEndTime - listStartTime) / CLOCKS_PER_SEC;
-	std::cout << std::fixed << std::setprecision(2);
-	std::cout << std::fixed << "Time to process a range of " << vector.size() << " elements with std::vector:	" << elapsedVector << " us" << std::endl;
-	std::cout << std::fixed << "Time to process a range of " << list.size() << " elements with std::list:	" << elapsedList << " us" << std::endl;
+	double elapsedVector = double(vectorEndTime - vectorStartTime) / CLOCKS_PER_SEC * 1000000;
+	double elapsedList = double(listEndTime - listStartTime) / CLOCKS_PER_SEC * 1000000;
+	//std::cout << std::fixed;
+	std::cout << "Time to process a range of " << vector.size() << " elements with std::vector:	" << elapsedVector << " us" << std::endl;
+	std::cout << "Time to process a range of " << list.size() << " elements with std::list:	" << elapsedList << " us" << std::endl;
 
 }
