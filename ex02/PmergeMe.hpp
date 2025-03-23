@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:45 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/23 22:21:13 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 00:36:32 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 # include <iomanip>
 # include <utility>
 # include <algorithm>
+# include <cmath>
 
 class PmergeMe {
 	private:
+
 		PmergeMe();
 		PmergeMe(const PmergeMe &other);
 		PmergeMe &operator=(const PmergeMe &other);
@@ -39,17 +41,20 @@ class PmergeMe {
 			std::cout << std::endl;
 		}
 
+		static int getJacobsthal(int n);
+
 // ---- Vectors ---- //
 
 		template <typename T>
-		static T next(T it, int steps) {
+		static T next(T it, size_t steps) {
 			std::advance(it, steps);
 			return it;
 		}
 		
 		template <typename T>
 		static bool comparePairs(T lv, T rv) {
-			// PmergeMe::nbr_of_comps++;
+			if (lv == T() || rv == T())
+				return false;
 			return *lv < *rv;
 		}
 
@@ -87,19 +92,101 @@ class PmergeMe {
 				Iterator nextPair = next(it, pairSize * 2 - 1);
 				if (comparePairs(nextPair, currentPair))
 					swapPair(currentPair, pairSize);
-
-				std::cout << "[";
-				for (Iterator itc = currentPair - (pairSize - 1); itc != currentPair + 1; ++itc)
-					std::cout << *itc << (itc != currentPair ? ", " : "");
-				std::cout << "][";
-				for (Iterator itn = nextPair - (pairSize - 1); itn != nextPair + 1; ++itn)
-					std::cout << *itn << (itn != nextPair ? ", " : "");
-				std::cout << "]";
-
 			}
-			std::cout << std::endl;
+			
+			// recursive call to get all pairs sorted
 			sortVector(v, pairSize * 2);
 		
+			std::vector<Iterator> main;
+			std::vector<Iterator> pend;
+			main.insert(main.end(), next(v.begin(), pairSize - 1));
+			main.insert(main.end(), next(v.begin(), pairSize * 2 - 1));
+
+			for (int i = 4; i <= nbrPairs; i += 2)
+			{
+				pend.insert(pend.end(), next(v.begin(), pairSize * (i - 1) - 1));
+				main.insert(main.end(), next(v.begin(), pairSize * i - 1));
+			}
+			if (isOdd)
+				pend.insert(pend.end(), next(end, pairSize - 1));
+			
+			int prevJacobsthal = getJacobsthal(1);
+			int insertedNumbers = 0;	
+			
+			for (int k = 2;; k++)
+			{
+				int currJacobsthal = getJacobsthal(k);
+				int jacobsthalDiff = currJacobsthal - prevJacobsthal;
+				int offset = 0;
+				if (jacobsthalDiff > static_cast<int>(pend.size()))
+					break;
+				int nbrTimes = jacobsthalDiff;
+				typename std::vector<Iterator>::iterator pendIt = next(pend.begin(), jacobsthalDiff - 1);
+				typename std::vector<Iterator>::iterator boundIt =
+					next(main.begin(), currJacobsthal + insertedNumbers);
+				if (boundIt > main.end())
+					boundIt = main.end();
+				while (nbrTimes)
+				{
+					typename std::vector<Iterator>::iterator idx =
+						std::upper_bound(main.begin(), boundIt, *pendIt, comparePairs<Iterator>);
+					typename std::vector<Iterator>::iterator inserted = main.insert(idx, *pendIt);
+					nbrTimes--;
+					pendIt = pend.erase(pendIt);
+					std::advance(pendIt, -1);
+					offset += (inserted - main.begin()) == currJacobsthal + insertedNumbers;
+					boundIt = next(main.begin(), currJacobsthal + insertedNumbers - offset);
+				}
+				prevJacobsthal = currJacobsthal;
+				insertedNumbers += jacobsthalDiff;
+				offset = 0;
+			}
+
+			// This prevents the loop from going out of bounds
+			// but stops the algo from working properly
+			// if (pend.empty())
+			// 	return;
+
+			for (ssize_t i = pend.size(); i > 0; i--)
+			{
+				typename std::vector<Iterator>::iterator currPend =
+					next(pend.begin(), (i));
+				typename std::vector<Iterator>::iterator currBound =
+					next(main.begin(), main.size() - pend.size() + i + isOdd);
+				
+				// This prevents the loop from going out of bounds
+				// but stops the algo from working properly
+				// if (currPend >= pend.end()) {
+				// 	break;
+				// }
+					
+				// !This line is the problem!
+				typename std::vector<Iterator>::iterator idx =
+					std::upper_bound(main.begin(), currBound, *currPend, comparePairs<Iterator>);
+				main.insert(idx, *currPend);
+			}
+		
+			std::vector<int> copy;
+			copy.reserve(v.size());
+			for (typename std::vector<Iterator>::iterator it = main.begin(); it != main.end(); it++)
+			{
+				for (int i = 0; i < pairSize; i++)
+				{
+					Iterator pairStart = *it;
+					std::advance(pairStart, -pairSize + i + 1);
+					copy.insert(copy.end(), *pairStart);
+				}
+			}
+
+			Iterator containerIt = v.begin();
+			std::vector<int>::iterator copyIt = copy.begin();
+			while (copyIt != copy.end())
+			{
+				*containerIt = *copyIt;
+				containerIt++;
+				copyIt++;
+			}
+
 		}
 	
 

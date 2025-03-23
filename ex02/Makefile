@@ -6,7 +6,7 @@
 #    By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 13:23:14 by nponchon          #+#    #+#              #
-#    Updated: 2025/03/23 22:07:12 by nponchon         ###   ########.fr        #
+#    Updated: 2025/03/24 00:04:09 by nponchon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,9 @@ all: $(NAME)
 
 run: all
 	./$(NAME) `shuf -i 1-100000 -n 3000 | tr '\n' ' '`
+
+example: all
+	./$(NAME) 11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7
 
 leak:
 	valgrind --leak-check=full ./$(NAME)

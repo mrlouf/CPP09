@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:50 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/23 21:42:53 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 00:20:04 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 	return *this;
 }
 PmergeMe::~PmergeMe() {}
+
+int PmergeMe::getJacobsthal(int n) { return static_cast<int>(round((pow(2, n + 1) + pow(-1, n)) / 3)); }
 
 void PmergeMe::getContainers(char **av, std::vector<int> &v, std::list<int> &l) {
 	for (unsigned int i = 0; av[i]; i++) {
@@ -57,7 +59,7 @@ void PmergeMe::processInput(char **av) {
 	sortList(list);
 	std::clock_t listEndTime = std::clock();
 
-	// std::cout << "After:	"; printContainer(list);
+	std::cout << "After:	"; printContainer(vector);
 
 	double elapsedVector = double(vectorEndTime - vectorStartTime) / CLOCKS_PER_SEC * 1000000;
 	double elapsedList = double(listEndTime - listStartTime) / CLOCKS_PER_SEC * 1000000;
