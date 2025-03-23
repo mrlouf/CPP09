@@ -6,7 +6,7 @@
 #    By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 13:23:14 by nponchon          #+#    #+#              #
-#    Updated: 2025/03/21 17:52:21 by nponchon         ###   ########.fr        #
+#    Updated: 2025/03/23 22:07:12 by nponchon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME 		= PmergeMe
 
 CC			= c++
 CFLAGS		= -Werror -Wall -Wextra -std=c++98
-DFLAGS		= -Wshadow -pedantic -g -Wconversion#-fsanitize=address -fsanitize=leak
+DFLAGS		= -Wshadow -pedantic -g -Wconversion -fsanitize=address -fsanitize=leak
 
 RM			= rm -fr
 
