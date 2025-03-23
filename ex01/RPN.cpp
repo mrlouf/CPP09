@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:01:10 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/21 13:22:18 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/23 20:59:17 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void RPN::processInput(std::string &input) {
 			throw std::runtime_error("Error: invalid token '" + token + "'");
 	}
 
+	// a valid RPN expression has n-1 operators, where n is the number of operands
 	if (_stack.size() != 1)
 		throw std::runtime_error("Error: invalid RPN expression");
 
