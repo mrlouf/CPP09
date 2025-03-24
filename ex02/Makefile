@@ -6,7 +6,7 @@
 #    By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 13:23:14 by nponchon          #+#    #+#              #
-#    Updated: 2025/03/24 14:38:23 by nponchon         ###   ########.fr        #
+#    Updated: 2025/03/24 14:53:34 by nponchon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,11 +36,11 @@ OBJS		= $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 
 all: $(NAME)
 
-3000: all
-	./$(NAME) `shuf -i 1-100000 -n 3000 | tr '\n' ' '`
-
-10000: all
+small: all
 	./$(NAME) `shuf -i 1-100000 -n 10000 | tr '\n' ' '`
+
+big: all
+	./$(NAME) `shuf -i 1-1000000 -n 100000 | tr '\n' ' '`
 
 example: all
 	./$(NAME) 11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7
@@ -63,4 +63,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re leak example 3000 10000
+.PHONY: all clean fclean re leak example small big

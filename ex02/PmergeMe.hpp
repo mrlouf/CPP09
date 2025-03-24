@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:45 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/24 14:40:31 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 15:08:49 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ class PmergeMe {
 		// checkers for sorted containers
 		static bool isVectorSorted(const std::vector<int> &vec);
 		static bool isDequeSorted(const std::deque<int> &deq);
-		
+
+		static void printInput(char **av);
 		template <typename Container>
 		static void printContainer(const Container &container)
 		{

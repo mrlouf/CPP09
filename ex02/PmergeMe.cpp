@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:50 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/24 14:37:22 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 15:08:45 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 	return *this;
 }
 PmergeMe::~PmergeMe() {}
+
+void PmergeMe::printInput(char **av) {
+	for (unsigned int i = 0; av[i]; i++)
+		std::cout << ' ' << av[i];
+	std::cout << std::endl;
+}
 
 int PmergeMe::getJacobsthal(int n) {
     return static_cast<int>(round((pow(2, n + 1) + pow(-1, n)) / 3)); 
@@ -91,7 +97,7 @@ void PmergeMe::processInput(char **av) {
 	std::vector<int>	vector;
 	std::deque<int>		deque;
 
-	// std::cout << "Before:	"; printContainer(vector);
+	std::cout << "Before:	"; printInput(av);
 
 	std::clock_t vectorStartTime = std::clock();
 	getVector(av, vector);
@@ -111,10 +117,10 @@ void PmergeMe::processInput(char **av) {
 
 	std::cout << "After:	"; printContainer(vector);
 
-	double elapsedVector = double(vectorEndTime - vectorStartTime) / CLOCKS_PER_SEC * 1000000;
-	double elapsedList = double(listEndTime - listStartTime) / CLOCKS_PER_SEC * 1000000;
+	double elapsedVector = double(vectorEndTime - vectorStartTime) / CLOCKS_PER_SEC;
+	double elapsedList = double(listEndTime - listStartTime) / CLOCKS_PER_SEC;
 
-	std::cout << "Time to process a range of " << vector.size() << " elements with std::vector:	" << elapsedVector << " us" << std::endl;
-	std::cout << "Time to process a range of " << deque.size() << " elements with std::list:	" << elapsedList << " us" << std::endl;
+	std::cout << std::fixed << std::setprecision(6) << "Time to process a range of " << vector.size() << " elements with std::vector:	" << elapsedVector << " s" << std::endl;
+	std::cout << std::fixed << std::setprecision(6) << "Time to process a range of " << deque.size() << " elements with std::deque:	" << elapsedList << " s" << std::endl;
 
 }
