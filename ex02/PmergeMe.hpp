@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:45 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/24 15:08:49 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 15:46:53 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ class PmergeMe {
 			}
 		}
 
-// ---- Vectors ---- //
+// ---- Vector ---- //
 
 		template <typename T>
 		static void sortVector(std::vector<T> &v, int pairSize) {
@@ -211,7 +211,7 @@ class PmergeMe {
 		}
 	
 
-// ---- Lists ---- //
+// ---- Deque ---- //
 
 		template <typename T>
 		static void sortDeque(std::deque<T> &d, int pairSize) {

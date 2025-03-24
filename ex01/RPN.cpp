@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:01:10 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/23 20:59:17 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:05:41 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void RPN::processInput(std::string &input) {
 
 	while (iss >> token) {
 		if (std::isdigit(token[0])) {
-			_stack.push(atoi(token.c_str()));
+			int i = atoi(token.c_str());
+			if (i > 9)
+				throw std::runtime_error("Error: unsupported operand '" + token + "'");
+			_stack.push(i);
 		} else if (token == "+" || token == "-" || token == "*" || token == "/") {
 			if (_stack.size() < 2) {
 				throw std::runtime_error("Error: insufficient operands");

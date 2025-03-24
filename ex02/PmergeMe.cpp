@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:50 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/24 15:08:45 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:08:39 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void PmergeMe::getVector(char **av, std::vector<int> &v) {
 
 	}
 }
-
 void PmergeMe::getDeque(char **av, std::deque<int> &d) {
 	for (unsigned int i = 0; av[i]; i++) {
 		
@@ -75,7 +74,6 @@ bool PmergeMe::isVectorSorted(const std::vector<int> &vec)
 	}
 	return true;
 }
-
 bool PmergeMe::isDequeSorted(const std::deque<int> &lst)
 {
 	std::deque<int>::const_iterator it = lst.begin();
@@ -107,10 +105,10 @@ void PmergeMe::processInput(char **av) {
 	if (!isVectorSorted(vector))
 		throw std::runtime_error("Error: vector is not sorted correctly.");
 
-	std::clock_t listStartTime = std::clock();
+	std::clock_t dequeStartTime = std::clock();
 	getDeque(av, deque);
 	sortDeque(deque, 1);
-	std::clock_t listEndTime = std::clock();
+	std::clock_t dequeEndTime = std::clock();
 
 	if (!isDequeSorted(deque))
 		throw std::runtime_error("Error: deque is not sorted correctly.");
@@ -118,9 +116,13 @@ void PmergeMe::processInput(char **av) {
 	std::cout << "After:	"; printContainer(vector);
 
 	double elapsedVector = double(vectorEndTime - vectorStartTime) / CLOCKS_PER_SEC;
-	double elapsedList = double(listEndTime - listStartTime) / CLOCKS_PER_SEC;
+	double elapsedDeque = double(dequeEndTime - dequeStartTime) / CLOCKS_PER_SEC;
 
-	std::cout << std::fixed << std::setprecision(6) << "Time to process a range of " << vector.size() << " elements with std::vector:	" << elapsedVector << " s" << std::endl;
-	std::cout << std::fixed << std::setprecision(6) << "Time to process a range of " << deque.size() << " elements with std::deque:	" << elapsedList << " s" << std::endl;
+	std::cout << std::fixed << std::setprecision(6)
+			  << "Time to process a range of " << std::setw(6) << vector.size()
+			  << " elements with std::vector: " << elapsedVector << " s" << std::endl;
+	std::cout << std::fixed << std::setprecision(6)
+			  << "Time to process a range of " << std::setw(6) << deque.size()
+			  << " elements with std::deque:  " << elapsedDeque << " s" << std::endl;
 
 }
