@@ -6,7 +6,7 @@
 /*   By: nponchon <nponchon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 13:33:45 by nponchon          #+#    #+#             */
-/*   Updated: 2025/03/24 00:36:32 by nponchon         ###   ########.fr       */
+/*   Updated: 2025/03/24 14:02:14 by nponchon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ class PmergeMe {
 		PmergeMe &operator=(const PmergeMe &other);
 
 		static void getContainers(char **av, std::vector<int> &v, std::list<int> &l);
+
+		static bool isVectorSorted(const std::vector<int> &vec);
 		
 		template <typename Container>
 		static void printContainer(const Container &container)
@@ -59,13 +61,13 @@ class PmergeMe {
 		}
 
 		template <typename T>
-		static void swapPair(T it, int pair_level)
+		static void swapPair(T it, int pairSize)
 		{
-			T start = next(it, -pair_level + 1);
-			T end = next(start, pair_level);
+			T start = next(it, -pairSize + 1);
+			T end = next(start, pairSize);
 			while (start != end)
 			{
-				std::iter_swap(start, next(start, pair_level));
+				std::iter_swap(start, next(start, pairSize));
 				start++;
 			}
 		}
@@ -82,9 +84,12 @@ class PmergeMe {
 			bool isOdd = nbrPairs % 2 == 1;
 
 			Iterator start = v.begin();
-			Iterator last = next(v.begin(), pairSize * (nbrPairs));
+			Iterator last = next(v.begin(), pairSize * nbrPairs);
 			Iterator end = next(last, -(isOdd * pairSize));
 
+			// Form pairs of 2, then 4, then 8, etc.
+			// until pairSize > v.size() / 2, swap if necessary.
+			// Ignore odd elements if any.
 			int jump = 2 * pairSize;
 			for (Iterator it = start; it != end; std::advance(it, jump))
 			{
@@ -94,11 +99,15 @@ class PmergeMe {
 					swapPair(currentPair, pairSize);
 			}
 			
-			// recursive call to get all pairs sorted
+			// recursive call to get all pairs formed and sorted
 			sortVector(v, pairSize * 2);
 		
+			// at this point, we start inserting the pairs into
+			// the main and the pend vectors
 			std::vector<Iterator> main;
 			std::vector<Iterator> pend;
+
+			// insert a1 and b1 into main
 			main.insert(main.end(), next(v.begin(), pairSize - 1));
 			main.insert(main.end(), next(v.begin(), pairSize * 2 - 1));
 
@@ -111,8 +120,15 @@ class PmergeMe {
 				pend.insert(pend.end(), next(end, pairSize - 1));
 			
 			int prevJacobsthal = getJacobsthal(1);
-			int insertedNumbers = 0;	
-			
+			int insertedNumbers = 0;
+
+			/* This is where Jacobsthal numbers do their magic:
+			each element in pend is inserted into main at the position of 
+			the Jacobsthal number that corresponds to the difference between
+			the current and previous Jacobsthal numbers.
+			The offset is used to avoid inserting elements at the end of the main vector.
+			The loop breaks when the difference between the current and previous
+			Jacobsthal numbers is greater than the size of the pend vector. */
 			for (int k = 2;; k++)
 			{
 				int currJacobsthal = getJacobsthal(k);
@@ -142,11 +158,6 @@ class PmergeMe {
 				offset = 0;
 			}
 
-			// This prevents the loop from going out of bounds
-			// but stops the algo from working properly
-			// if (pend.empty())
-			// 	return;
-
 			for (ssize_t i = pend.size(); i > 0; i--)
 			{
 				typename std::vector<Iterator>::iterator currPend =
@@ -154,15 +165,20 @@ class PmergeMe {
 				typename std::vector<Iterator>::iterator currBound =
 					next(main.begin(), main.size() - pend.size() + i + isOdd);
 				
-				// This prevents the loop from going out of bounds
-				// but stops the algo from working properly
-				// if (currPend >= pend.end()) {
-				// 	break;
-				// }
-					
-				// !This line is the problem!
+				//	get iterators back in bound to avoid segfaults
+				if (currPend < pend.begin())
+					currPend = pend.begin();
+				else if (currPend >= pend.end())
+					currPend = next(pend.end(), -1);
+				if (currBound < main.begin())
+					currBound = main.begin();
+				else if (currBound > main.end())
+					currBound = main.end();
+				
+				// !This line causes a segfault if the iterators are not in bound!
 				typename std::vector<Iterator>::iterator idx =
 					std::upper_bound(main.begin(), currBound, *currPend, comparePairs<Iterator>);
+								
 				main.insert(idx, *currPend);
 			}
 		
