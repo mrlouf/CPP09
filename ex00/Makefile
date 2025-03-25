@@ -25,7 +25,7 @@ OBJS		= $(addprefix $(OBJDIR)/, $(SRC:.cpp=.o))
 all: $(NAME)
 
 leak:
-	valgrind --leak-check=full ./$(NAME)
+	valgrind --leak-check=full ./$(NAME) input.txt
 
 $(OBJDIR)/%.o: %.cpp Makefile $(HEADERS)
 	@mkdir -p $(@D)
